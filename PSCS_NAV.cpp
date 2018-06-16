@@ -13,13 +13,13 @@
 #include "CansatGPS.h"
 #include "location.h"
 
-void tsk_NAV::TurnL()
+void mng_NAV::TurnL()
 {
 
 
 }
 
-void tsk_NAV::TURNR()
+void mng_NAV::TURNR()
 {
 
 
