@@ -1,6 +1,6 @@
 
 /**
-* @file BlynkConfig.h
+* @file PSCS_SD.h
 * @author SeungMin Shin, Haneulbit Kim, Chan Lee
 * @license This project is released under the MIT License (MIT)
 * @copyright Copyright (c) 2018 Asgardia
