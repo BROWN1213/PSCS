@@ -11,26 +11,48 @@
 #define PSCS_NAV_h
 
 #include "Arduino.h"
-#include "CansatSystem.h"
-#include "CansatGPS.h"
-#include "location.h"
+#include<Servo.h>
 
-class tsk_NAV
+class MngNavigation
 {
   public:
-
+    MngNavigation();
+    void attach(int pin);
+    void turnWinch(uint16_t microsec);
+    uint16_t angleToMicrosec(float angle);
   private:
+    int _winch_servo_pin;
+    Servo _winch_servo;
 
 };
 
-class mng_NAV
+class TskNavigation
 {
   public:
-    void TurnL(); //Turn Left
-    void TurnR(); //Turn Right
+    TskNavigation();
+    void begin(int pin);
+    void updateNavigationParamers(float dist,float bearing, float course,float d_alt);
+    void updateControlAngle();
+    void printNavigationInfo();
+    void setNavigationMode(bool mode);
+    bool getNavigationMode();
+    void winchControl(float angle);
+    float getControlAngle();
+
+
   private:
+    float _distance_from_destination;
+    float _bearing_angle_wrap180;
+    float _course_angle_wrap180;
+    float _control_angle;
+    float _diff_altitude;
+    uint32_t _winch_angle;
+    bool _mode;  // false: automode, true: manual mode
+    MngNavigation _manager_winch;
 
 };
+
+
 
 
 #endif

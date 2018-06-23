@@ -3,26 +3,41 @@
 #define TSK_Freefall_h
 
 #include "Arduino.h"
-#include "CansatSystem.h"
 #include "Servo.h"
 
-class TSK_Freefall
+class MngFreeFall
+
 {
   public:
-    TSK_Freefall(int pin);
-    /*  to move servo */
-
-
+     MngFreeFall();
+     void attach(int pin);
+     void servoReady();
+     void servoHooking();
+     void servoRelease();
 
   private:
+    int _pin;
+    Servo _myservo;
+
+
 };
 
-class MNG_Freefall
 
+class TskFreeFall
 {
   public:
+    TskFreeFall();
+    /*  to move servo */
+    void begin(int pin);
+    void readyPosition();
+    void hookingPosition();
+    void releasePosition();
+
 
   private:
+    MngFreeFall _manager_servo;
+    
+
 
 };
 

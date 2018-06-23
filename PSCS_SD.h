@@ -13,25 +13,31 @@
 
 
 #include "Arduino.h"
+#include <SPI.h>
+#include <SD.h>
 
-class tsk_SD
+
+class MngSdWrite
 {
   public:
-  tsk_SD();
-    void GPS(float GPSinfo);
-    void SaveDataOrder();
+    bool begin(int cs_pin);
+    File fileOpen(String sfilename);
+    void fileClose(File fp);
   private:
-    float _GPSinfo;
+    File _file_handle;
+    String _file_name;
+};
+class TskSd
+{
+  public:
+    bool beginSdcard(int cs_pin);
+    void setFileName(String sfilename);
+    bool saveData(String sdata_string);
+  private:
+    String _slog_file_name;
+    MngSdWrite _manager_sd_write;
 //to be going to add:ACC, falling point, parachute opening point
 };
 
-class mng_SD
-{
-  public:
-    mng_SD();
-    void manager(int order);
-    void Savedata();
-  private:
-    int _order;
-};
+
 #endif
