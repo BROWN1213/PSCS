@@ -10,35 +10,30 @@
 #include "PSCS_SD.h"
 #include "Arduino.h"
 
-tsk_SD::tsk_SD()
+bool TskSd::beginSdcard(int cs_pin)
+{
+
+}
+void TskSd::setFileName(String sfilename)
+{
+
+}
+bool TskSd::saveData(String sdata_string)
 {
 
 }
 
 
-void tsk_SD::GPS(float GPSinfo)
-{
-  Serial.println("GPS");
-  Serial.println("Location");
-  Serial.println(GPSinfo);
 
-}
-
-void tsk_SD::SaveDataOrder()
+bool MngSdWrite::begin(int cs_pin)
 {
 
-
+}
+File MngSdWrite::fileOpen(String sfilename)
+{
 
 }
+void MngSdWrite::fileClose(File fp)
+{
 
-
-mng_SD::mng_SD()
-{}
-
-
-void mng_SD::manager(int order)
-{}
-
-
-void mng_SD::Savedata()
-{}
+}
