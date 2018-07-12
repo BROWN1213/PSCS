@@ -29,7 +29,7 @@ void TskGps::update()
 }
 int32_t TskGps::getTime()
 {
-  return(_manager_gps.time);
+  return((int32_t)_manager_gps.time);
 }
 int32_t TskGps::getDate()
 {
@@ -60,27 +60,28 @@ bool TskGps::isGpsDataNew()
   }
 
 }
-
+void TskGps::rx_empty(){
+  _manager_gps.rx_empty();
+}
 void TskGps::printGpsInfo()
 {
-  Serial.println("****   GPS Info   ****************");
-  Serial.print("date=");
+  Serial.println(F("** GPS Info **"));
+  Serial.print(F("date="));
   Serial.println(_manager_gps.date);
-  Serial.print("time=");
+  Serial.print(F("time="));
   Serial.println(_manager_gps.time);
-  Serial.print("latitude=");
+  Serial.print(F("lat="));
   Serial.println(_manager_gps.lat,7);
-  Serial.print("longitude=");
+  Serial.print(F("lng="));
   Serial.println(_manager_gps.lng,7);
-  Serial.print("altitude=");
+  Serial.print(F("alt="));
   Serial.println(_manager_gps.alt);
-  Serial.print("num_sat=");
+  Serial.print(F("nsat="));
   Serial.println(_manager_gps.num_satellites);
-  Serial.print("speed(m/s)=");
+  Serial.print(F("spd="));
   Serial.println(_manager_gps.ground_speed);
-  Serial.print("course=");
+  Serial.print(F("crs="));
   Serial.println(_manager_gps.ground_course);
-  Serial.println("*********************************");
 
 }
 
@@ -100,12 +101,21 @@ void MngGps::readGpsData()
 bool MngGps::isGpsDataReady()
 {
   bool ready;
-  ready=false;
-  if(cansatGPS.read()) ready=true;
+
+  if(cansatGPS.read()){
+    ready=true;
+  }else {
+    ready=false;
+  }
 
   return ready;
 }
 void MngGps::gpsBegin()
 {
   cansatGPS.begin(9600);
+}
+
+void MngGps::rx_empty()
+{
+  cansatGPS.rx_empty();
 }

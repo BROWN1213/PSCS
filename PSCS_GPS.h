@@ -27,6 +27,7 @@ class MngGps
     void readGpsData(); //Measure GPS value
     bool isGpsDataReady();
     void gpsBegin();
+    void rx_empty();
 
     float time;
     int32_t date;
@@ -51,6 +52,7 @@ class TskGps
     uint8_t getNumOfSatellites();
     LocationInfo getLocation();
     bool isGpsDataNew();
+    void rx_empty();
     void printGpsInfo();
 
   private:

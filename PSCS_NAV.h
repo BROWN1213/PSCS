@@ -12,6 +12,7 @@
 
 #include "Arduino.h"
 #include<Servo.h>
+#include<SimpleTimer.h>
 
 class MngNavigation
 {
@@ -24,21 +25,24 @@ class MngNavigation
     int _winch_servo_pin;
     Servo _winch_servo;
 
+
 };
 
 class TskNavigation
 {
   public:
     TskNavigation();
-    void begin(int pin);
+    void begin(int pin,void (*winchCallback)());
     void updateNavigationParamers(float dist,float bearing, float course,float d_alt);
     void updateControlAngle();
     void printNavigationInfo();
     void setNavigationMode(bool mode);
     bool getNavigationMode();
     void winchControl(float angle);
+    void winchNeutral();
     float getControlAngle();
-
+    void timerRun();
+    MngNavigation _manager_winch;
 
   private:
     float _distance_from_destination;
@@ -48,8 +52,10 @@ class TskNavigation
     float _diff_altitude;
     uint32_t _winch_angle;
     bool _mode;  // false: automode, true: manual mode
-    MngNavigation _manager_winch;
 
+    SimpleTimer _winchTimer;
+    int _timerId;
+    void (*_pCallback)(void);
 };
 
 

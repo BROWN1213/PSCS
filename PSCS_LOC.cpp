@@ -199,7 +199,7 @@ TskLocation::TskLocation()
 void TskLocation::begin()
 {
 
-  if(testVincenty())Serial.println("vincenty is OK");
+  if(testVincenty())Serial.println(F("vincenty is OK"));
   _distance=0.0;      //Initialize distance
   _bearing_angle=0.0;  //Initialize bearing Angle
   _destination_coord.alt=0.0;    //Initialize Altitude

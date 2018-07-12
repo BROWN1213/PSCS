@@ -12,3 +12,4 @@
 #include<PSCS_LOC.h>
 #include<PSCS_NAV.h>
 #include<PSCS_SD.h>
+#include<PSCS_AHRS.h>
