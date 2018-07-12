@@ -1,3 +1,12 @@
+/**
+* @file PSCS_Freefall.h
+* @author SeungMin Shin, Haneulbit Kim, Chan Lee
+* @license This project is released under the MIT License (MIT)
+* @copyright Copyright (c) 2018 Asgardia
+* @date June 2018
+* @brief ...
+*
+*/
 
 #ifndef TSK_Freefall_h
 #define TSK_Freefall_h
@@ -36,7 +45,7 @@ class TskFreeFall
 
   private:
     MngFreeFall _manager_servo;
-    
+
 
 
 };

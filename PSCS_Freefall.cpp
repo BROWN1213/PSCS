@@ -1,5 +1,5 @@
 /**
-* @file BlynkConfig.h
+* @file PSCS_Freefall.cpp
 * @author SeungMin Shin, Haneulbit Kim, Chan Lee
 * @license This project is released under the MIT License (MIT)
 * @copyright Copyright (c) 2018 Asgardia
@@ -18,10 +18,9 @@ void TskFreeFall::begin(int pin)
 {
   _manager_servo.attach(pin);
 }
-
-void TskFreeFall::readyPosition(){
-
-  Serial.println("readyPosition");
+void TskFreeFall::readyPosition()
+{
+  Serial.println(F("readyPosition"));
   _manager_servo.servoReady();
 }
 void TskFreeFall::hookingPosition(){

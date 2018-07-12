@@ -9,18 +9,26 @@
 
 #include "PSCS_NAV.h"
 
+#define MILLPER1T 1560.*1.5 //1.56sec per 1 turn. 1.5 is tuning value
+#define MAXTURN 3.
+#define CONTROLL_MAX 0.75 // 180deg to 0.75 turn
+#define WINCHMAX_CALLBACKTIME MILLPER1T*CONTROLL_MAX
 
-
+#define WINCH_MIN (uint16_t)(1500.- (600./MAXTURN*CONTROLL_MAX) ) //0.75 turn to 1650
+#define WINCH_MAX (uint16_t)(1500.+ (600./MAXTURN*CONTROLL_MAX) )  //-0.75 turn to 1350
 TskNavigation::TskNavigation()
 {
 
 }
-void TskNavigation::begin(int pin)
+void TskNavigation::begin(int pin,void (*winchCallback)())
 {
-  _mode=false; //set to auto mode
+  _mode=true; //set to manual mode
   _manager_winch.attach(pin);
   _control_angle=0; //
   winchControl(0);
+  _pCallback=winchCallback;
+  _timerId=0;
+
 }
 void TskNavigation::setNavigationMode(bool mode)
 {
@@ -55,19 +63,39 @@ void TskNavigation::updateControlAngle()
   }
 }
 
+void TskNavigation::timerRun(){
+  _winchTimer.run();
+}
+
 void TskNavigation::winchControl(float angle)
 {
+  uint16_t winch_neutal_time;
   if(!_mode){  // auto mode
     _manager_winch.turnWinch( _manager_winch.angleToMicrosec(_control_angle) );
-    Serial.print("Turn winch(auto):");
+    if(fabs(angle)>20){
+      winch_neutal_time=(uint16_t)(WINCHMAX_CALLBACKTIME*fabs(angle)/180.);
+      if(_winchTimer.getNumTimers()>0)_winchTimer.deleteTimer(_timerId);
+      _timerId=_winchTimer.setTimeout(winch_neutal_time, _pCallback);
+    }
+    Serial.print(F("Turn winch(auto):"));
     Serial.println(_control_angle);
   }else{ //manual mode
     _manager_winch.turnWinch( _manager_winch.angleToMicrosec(angle) );
-    Serial.print("Turn winch(manu):");
+    if(fabs(angle)>20){
+      winch_neutal_time=(uint16_t)(WINCHMAX_CALLBACKTIME*fabs(angle)/180.);
+      //Serial.print("callback time=");
+      //Serial.println(winch_neutal_time);
+      if(_winchTimer.getNumTimers()>0)_winchTimer.deleteTimer(_timerId);
+      _timerId=_winchTimer.setTimeout(winch_neutal_time, _pCallback);
+    }
+    Serial.print(F("Turn winch(manu):"));
     Serial.println(angle);
   }
 }
+void TskNavigation::winchNeutral(){
+  _manager_winch.turnWinch( _manager_winch.angleToMicrosec(0) );
 
+}
 float TskNavigation::getControlAngle()
 {
   return _control_angle;
@@ -76,17 +104,14 @@ float TskNavigation::getControlAngle()
 void TskNavigation::printNavigationInfo()
 {
 
-  Serial.println("******* Navigation Info *********");
-  Serial.println("* bearin:course:dist:altitude =  ");
-  Serial.print( _bearing_angle_wrap180);Serial.print(":");
-  Serial.print( _course_angle_wrap180);Serial.print(":");
-  Serial.print( _distance_from_destination);Serial.print(":");
+  Serial.println(F("** Navi br:cr:dst:alt  **"));
+  Serial.print( _bearing_angle_wrap180);Serial.print(F(":"));
+  Serial.print( _course_angle_wrap180);Serial.print(F(":"));
+  Serial.print( _distance_from_destination);Serial.print(F(":"));
   Serial.println( _diff_altitude);
 
-  Serial.print("**** turn  ");
-  Serial.print( _control_angle);
-  Serial.println("  ******");
-  Serial.println("********************************* ");
+  Serial.print(F("** Turn = "));
+  Serial.println( _control_angle);
 }
 
 MngNavigation::MngNavigation()
@@ -115,13 +140,15 @@ uint16_t MngNavigation::angleToMicrosec(float angle)
   //the angle is -179~180
   angle=0-angle;
   if(angle< -179 || angle>180){
-    Serial.print("Wrong winch angle");
+    Serial.print(F("Wrong winch angle"));
     Serial.println(angle);
     return;
   }
   //angle_micro=(uint16_t)map(angle,-179,180,900,2100); //max 3 turn too much turn
   //angle_micro=(uint16_t)map(angle,-179,180,1100,1900);  // max 2 turn
-  angle_micro=(uint16_t)map(angle,-179,180,1200,1800);  // max 1.5 turn
-
+  //angle_micro=(uint16_t)map(angle,-179,180,1200,1800);  // max 1.5 turn
+  //angle_micro=(uint16_t)map(angle,-179,180,1350,1650);  // max 0.75 turn
+  angle_micro=(uint16_t)map(angle,-179,180,WINCH_MIN,WINCH_MAX);
+  //Serial.print(WINCH_MIN);Serial.println(WINCH_MAX);
   return angle_micro;
 }
