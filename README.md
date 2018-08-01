@@ -6,6 +6,8 @@
 
 위성이 낙하하면서 자신의 위치정보를 GPS로 측정하고 목적지 까지의 거리와 방향각을 계산하여 자율항법알고리즘을 통해 스스로 낙하산을 조종합니다.  
 
+제작과정과 실험 낙하 동영상 (https://www.youtube.com/watch?v=vwvqRs__wvk)
+
 ![](https://github.com/BROWN1213/PSCS/blob/master/image/pscs1.png)
 ![](https://github.com/BROWN1213/PSCS/blob/master/image/pscs2.png)
 
