@@ -54,6 +54,7 @@ class TskGps
     bool isGpsDataNew();
     void rx_empty();
     void printGpsInfo();
+    void printGpsInfoSimple();
 
   private:
     int32_t _last_gps_time_ms;
