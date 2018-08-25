@@ -100,10 +100,11 @@ void OnManualControl(){
     return;  
   }
 
-  trigger = cmdMessenger.readFloatArg();
+  trigger = cmdMessenger.readInt16Arg();
   tskNavigation.winchControl((float)trigger*(float)89.);
   cmdMessenger.sendCmd(kAcknowledge,"manual Contol Ok"); 
   Serial.print("Control angle="); 
   Serial.println((float)trigger*(float)89.); 
   
 }
+
