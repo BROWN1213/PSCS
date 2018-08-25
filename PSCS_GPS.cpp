@@ -84,7 +84,18 @@ void TskGps::printGpsInfo()
   Serial.println(_manager_gps.ground_course);
 
 }
-
+void TskGps::printGpsInfoSimple()
+{
+  Serial.println(F("** GPS Info **"));
+  Serial.print(F("time="));
+  Serial.println(_manager_gps.time);
+  Serial.print(F("lat="));
+  Serial.println(_manager_gps.lat,7);
+  Serial.print(F("lng="));
+  Serial.println(_manager_gps.lng,7);
+  Serial.print(F("alt="));
+  Serial.println(_manager_gps.alt);
+}
 
 
 void MngGps::readGpsData()
