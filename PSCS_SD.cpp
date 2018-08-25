@@ -49,8 +49,10 @@ bool TskSd::saveData(LogPacket *log_packet)
   if(fp){
     fp.println(logPacketToString(log_packet));
     _manager_sd_write.fileClose(fp);
+    return true;
   }else{
     Serial.println(F("Err WR LOG"));
+    return false;
   }
 
 }
@@ -60,8 +62,10 @@ bool TskSd::saveDataImu(ImuPacket *imu_packet)
   if(fp){
     fp.println(imuPacketToString(imu_packet));
     _manager_sd_write.fileClose(fp);
+    return true;
   }else{
     Serial.println(F("Err WR IMUdata"));
+    return false;
   }
 
 }
@@ -72,9 +76,11 @@ bool TskSd::saveDataImu(ImuPacket *array_imu_packet,uint16_t size)
     for(uint16_t i=0;i<size;i++){
       fp.println(imuPacketToString(array_imu_packet+i) );
       _manager_sd_write.fileClose(fp);
+      return true;
     }
   }else{
     Serial.println(F("Err WR IMUdata"));
+    return false;
   }
 
 }
