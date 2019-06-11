@@ -75,9 +75,8 @@ bool TskSd::saveDataImu(ImuPacket *array_imu_packet,uint16_t size)
   if(fp){
     for(uint16_t i=0;i<size;i++){
       fp.println(imuPacketToString(array_imu_packet+i) );
-      _manager_sd_write.fileClose(fp);
-      
     }
+     _manager_sd_write.fileClose(fp);
     return true;
   }else{
     Serial.println(F("Err WR IMUdata"));
